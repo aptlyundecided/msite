@@ -5,11 +5,11 @@
                 div(class='md-title') Things I've Worked On
             md-card-content
                 h3 Controls Engineering
-                p About half of my programming experience is tied into the manufacturing industry.  But that's a good thing!
-                    | If code quality isn't up to par, and a machine crashes, you can't just reboot it, or debug it.
-                    | It requires a lot of time and manual labor to fix a physical machine that is damaged.  This has emphasized 
-                    | to me the importance of writing high quality, highly tested, well planned code.
-            
+                p About half of my programming experience is tied into the manufacturing industry.  But that's a good thing!  
+                    | If code quality isn't up to par and a machine crashes, you can't just reboot or debug it.
+                    | A lot of time and manual labor is required to fix a physical machine that is damaged.  This has emphasized 
+                    | to me the importance of writing high quality, highly tested, and well planned code.
+             
 </template>
 
 <script>
