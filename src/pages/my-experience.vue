@@ -3,7 +3,6 @@
         md-card()
             md-card-header
                 div(class='md-title') Things I've Worked On
-                div(class='md-subhead') and why they are relevant
             md-card-content
                 h3 Controls Engineering
                 p About half of my programming experience is tied into the manufacturing industry.  But that's a good thing!

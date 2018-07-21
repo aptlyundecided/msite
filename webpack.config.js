@@ -66,6 +66,10 @@ module.exports = {
         options: {
           name: '[name].[ext]?[hash]'
         }
+      },
+      {
+        test: require.resolve('snapsvg'),
+        use: 'imports-loader?this=>window,fix=>module.exports=0',
       }
     ]
   },

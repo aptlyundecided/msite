@@ -3,13 +3,16 @@
         md-tabs
             md-tab(id='tab-my-experience' md-label='My Experience')
                 my-experience
+            md-tab(id='tab-snap-practice' md-label='Snap Practice')
+                snap-practice
 </template>
 
 <script>
 /*]
 [|]
 [*/
-import my_experience from './pages/my_experience.vue'
+import my_experience from './pages/my-experience.vue'
+import snap_practice from './pages/snap-practice.vue'
 /*]
 [|]
 [*/
@@ -20,7 +23,8 @@ export default {
     }
   },
   components: {
-    'my-experience': my_experience
+    'my-experience': my_experience,
+    'snap-practice': snap_practice
   }
 }
 </script>
