@@ -6,12 +6,16 @@
             h2(class='md-title') Alex Wilson - Portfolio / CV
         md-drawer(:md-active.sync="showNavigation")
             md-list(:md-ripple='false')
-                md-list-item About this App
                 md-list-item(@click='show("hello-world")' :md-ripple='false') Hello World
+                md-list-item(@click='show("about-this-app")' :md-ripple='false') About this App
+                md-list-item(@click='show("design-pattern-app")' :md-ripple='false') Design Patterns App
+                md-list-item(@click='show("playground")' :md-ripple='false') Playground
                 md-list-item(@click='show("my-experience")' :md-ripple='false') My Experience
-                md-list-item Playground
         div(id='card-load-zone')
+            about-this-app(v-show='show_text === "about-this-app"')
+            design-pattern-app(v-show='show_text === "design-pattern-app"')
             hello-world(v-show='show_text === "hello-world"')
+            playground(v-show='show_text === "playground"')
             my-experience(v-show='show_text === "my-experience"')
 </template>
 
@@ -23,34 +27,40 @@
 /*]
 [|]
 [*/
-import my_experience from './pages/my-experience.vue'
-// import snap_practice from './pages/snap-practice.vue'
+import about from './pages/about-this-app.vue'
+import design_pattern_app from './pages/design-pattern-app.vue'
 import hello_world from './pages/hello-world.vue'
+import playground from './pages/playground.vue'
+import my_experience from './pages/my-experience.vue'
 /*]
 [|]
 [*/
 export default {
-  name: 'app',
-  data: () => ({
-      showNavigation: false,
-      showSidePanel: false,
-      show_text: 'hello-world'
-  }),
-  components: {
-    'my-experience': my_experience,
-    // 'snap-practice': snap_practice,
-    'hello-world': hello_world
-  },
-  computed: {
-
-  },
-  methods: {
-      show (panel_name) {
-          if (typeof panel_name === 'string') {
-              this.show_text = panel_name
-          }
-      }
-  }
+    name: 'app',
+    data: () => ({
+        showNavigation: false,
+        showSidePanel: false
+    }),
+    components: {
+        'about-this-app': about,
+        'design-pattern-app': design_pattern_app,
+        'hello-world': hello_world,
+        'playground': playground,
+        'my-experience': my_experience
+    },
+    computed: {
+        show_text () {
+            return this.$store.getters.active_page
+        }
+    },
+    methods: {
+        show (page_name) {
+            this.$store.commit('set_active_page', page_name)
+        }
+    },
+    mounted () {
+        this.show('hello-world')
+    }
 }
 </script>
 
