@@ -1,4 +1,4 @@
-# Alex Wilson portfolio website
+# Alex Wilson Portfolio Website
 
 #### Should showcase the types of projects I have worked on
 I've been all over the place with my experience.  This is both good and bad.  I would mainly like to showcase why it's good.
