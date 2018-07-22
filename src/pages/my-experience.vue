@@ -5,10 +5,18 @@
                 div(class='md-title') Things I've Worked On
             md-card-content
                 h3 Controls Engineering
+                md-list
+                  md-list-item Allen Bradley
+                  md-list-item Fanuc
+                  md-list-item Siemens TIA Portal
+                  md-list-item Automation Direct [DirectSoft, Do More, Click]
                 p About half of my programming experience is tied into the manufacturing industry.  But that's a good thing!  
                     | If code quality isn't up to par and a machine crashes, you can't just reboot or debug it.
                     | A lot of time and manual labor is required to fix a physical machine that is damaged.  This has emphasized 
                     | to me the importance of writing high quality, highly tested, and well planned code.
+
+                h3 Data Aggregation and Analysis
+                h3 Cloud Services Integration
              
 </template>
 
