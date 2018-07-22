@@ -18,6 +18,7 @@ import Vuex from 'vuex'
 [|]            Import Store Modules
 [|] || -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- ||
 [*/
+import aviary from './aviary.js'
 /*]
 [|]
 [*/
@@ -48,6 +49,7 @@ export default new Vuex.Store({
         }
     },
     modules: {
+        aviary
     }
 })
 /*]
