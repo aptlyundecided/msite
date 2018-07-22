@@ -112,7 +112,7 @@ export default {
       /*]
       [|] assign it 
       [*/
-      this.s = s.circle(70, 70, 70)
+      this.s = s.circle(70, 70, 50)
       this.s2 = s2.circle(150, 70, 70)
   }
 }
