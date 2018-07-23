@@ -16,11 +16,17 @@ const aviary = {
         BirdFactory: birds.BirdFactory,
         flamingos: [],
         penguins: [],
+        toucans: [],
         uncategorized_birds: []
     },
     actions: {
     },
     mutations: {
+        /*]
+        [|] TODO:
+        [|] 01: Extract giant switch case?  Or should it be left monolithic?  Decide first.
+        [|] 02: carry out ^ decision.
+        [*/
         add_bird (state, bird_type) {
             let new_bird = {}
             if (typeof bird_type === 'string') {
@@ -40,15 +46,18 @@ const aviary = {
                         break
 
 
+                    case 'toucan':
+                        new_bird = state.BirdFactory('toucan')
+                        state.toucans.push(new_bird)
+                        break
+
+
                     default:
                         console.warn('Unknown Bird Type')
                 }
             } else {
                 // TODO: Throw nasty bird error
             }
-
-            console.log(state.flamingos)
-            console.log(state.penguins)
         }
     },
     getters: {
@@ -57,6 +66,9 @@ const aviary = {
         },
         total_penguins (state) {
             return state.penguins.length
+        },
+        total_toucans (state) {
+            return state.toucans.length
         }
     }
 }

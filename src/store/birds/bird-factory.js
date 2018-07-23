@@ -1,5 +1,6 @@
 import Flamingo from './flamingo.js'
 import Penguin from './penguin.js'
+import Toucan from './toucan.js'
 /*]
 [|]
 [*/
@@ -19,7 +20,12 @@ const BirdFactory = (bird_type) => {
                 new_bird = new Penguin()
                 break
 
-                
+
+            case 'toucan':
+                new_bird = new Toucan()
+                break
+
+
             default:
                 console.log('bird type not handled')
         }

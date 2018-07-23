@@ -17,6 +17,7 @@
             hello-world(v-show='show_text === "hello-world"')
             playground(v-show='show_text === "playground"')
             my-experience(v-show='show_text === "my-experience"')
+            dialog-box
 </template>
 
 
@@ -29,6 +30,7 @@
 [*/
 import about from './pages/about-this-app.vue'
 import design_pattern_app from './pages/design-pattern-app.vue'
+import dialog from './components/dialog.vue'
 import hello_world from './pages/hello-world.vue'
 import playground from './pages/playground.vue'
 import my_experience from './pages/my-experience.vue'
@@ -44,6 +46,7 @@ export default {
     components: {
         'about-this-app': about,
         'design-pattern-app': design_pattern_app,
+        'dialog-box': dialog,
         'hello-world': hello_world,
         'playground': playground,
         'my-experience': my_experience
@@ -51,6 +54,9 @@ export default {
     computed: {
         show_text () {
             return this.$store.getters.active_page
+        },
+        show_dialog () {
+            return this.$store.getters['dialog/show_dialog']
         }
     },
     methods: {

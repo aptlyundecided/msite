@@ -19,6 +19,7 @@ import Vuex from 'vuex'
 [|] || -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=- ||
 [*/
 import aviary from './aviary.js'
+import dialog from './dialog.js'
 /*]
 [|]
 [*/
@@ -49,7 +50,8 @@ export default new Vuex.Store({
         }
     },
     modules: {
-        aviary
+        aviary,
+        dialog
     }
 })
 /*]

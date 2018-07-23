@@ -63,8 +63,6 @@ $green: #4CAF50;
         width: 75%;
         margin-left: 12.5%;
         margin-right: 12.5%;
-    }.general-list {
-
     }.expectations {
         h3 {
             font-size: 32px;
