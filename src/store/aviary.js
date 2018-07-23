@@ -29,6 +29,9 @@ const aviary = {
         [*/
         add_bird (state, bird_type) {
             let new_bird = {}
+            /*]
+            [|]
+            [*/
             if (typeof bird_type === 'string') {
                 /*]
                 [|]
@@ -61,6 +64,15 @@ const aviary = {
         }
     },
     getters: {
+        flamingos (state) {
+            return state.flamingos
+        },
+        penguins (state) {
+            return state.penguins
+        },
+        toucans (state) {
+            return state.toucans
+        },
         total_flamingos (state) {
             return state.flamingos.length
         },

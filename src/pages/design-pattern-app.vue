@@ -24,6 +24,9 @@
                 md-bottom-bar-item(@click='add_bird("flamingo")') Flamingo
                 md-bottom-bar-item(@click='add_bird("toucan")') Toucan
                 md-bottom-bar-item(@click='add_bird("penguin")') Penguin
+
+        // --- Inventory Card
+        aviary-inventory
 </template>
 
 
@@ -31,6 +34,10 @@
 
 
 <script>
+/*]
+[|]
+[*/
+import aviary_inventory from './design-patterns/aviary/aviary-inventory.vue'
 /*]
 [|]
 [*/
@@ -54,6 +61,9 @@ export default {
             ]
         }
     }),
+    components: {
+        'aviary-inventory': aviary_inventory
+    },
     computed: {
         total_flamingos () {
             return this.$store.getters['aviary/total_flamingos']
@@ -87,6 +97,15 @@ $green: #4CAF50;
 $light_green: #C8E6C9;
 $blue: #42A5F5;
 
+// --- Reusables
+@mixin two-in-a-row() {
+    width: 38%;
+    margin-left: 6%;
+    margin-right: 6%;
+    vertical-align: top;
+    display: inline-block;
+}
+
 // --- General Styling [ PRE Media Query ]
 #design-pattern-app{
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -99,9 +118,7 @@ $blue: #42A5F5;
     margin-right: 2.5%;
     margin-top: 2.5%;
     .aviary-card {
-        vertical-align: top;
-        display: inline-block;
-        width: 30%;
+        @include two-in-a-row();
         .info-button {
             text-align: right;
         }

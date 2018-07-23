@@ -5,10 +5,11 @@
                 div(class='md-title') About This App
                 div(class='md-subhead')
             md-card-content
-                h3 Background Information
-                md-content This app is built on the Vue framework, using SCSS and Pug.
+                h2 Background Information
+                md-content This app is built on the Vue.js framework.
                 md-content All the Vue Components derive their state from Vuex.
-                md-content Any portion of the website using React or other frameworks are noted at the point of use.
+                md-content Any portion of the website using React or other JS frameworks are noted at the point of use.
+                md-content SCSS is used for styling, pug for HTML.
                 md-content The webpage source code is publicly viewable on 
                     a(href='https://github.com/aptlyundecided/msite') GitHub
 </template>
