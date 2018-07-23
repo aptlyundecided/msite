@@ -6,6 +6,7 @@ I've been all over the place with my experience.  This is both good and bad.  I 
 #### Should demonstrate the following skills:
 * [ ] Ability to communicate via the written word
 * [ ] Responsive Web Design and the Document Object Model
+* [ ] Use effective design patterns, avoid code smells
 * [ ] Unit, Integration, and E2E testing.
 * [ ] Safe and Secure Data Flow
 * [ ] Data Volumes, and architectures to handle large data volumes
