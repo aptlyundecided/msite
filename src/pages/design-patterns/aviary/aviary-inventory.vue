@@ -44,6 +44,90 @@ export default {
         }
     },
     methods: {
+        populate_bird_inventory(bird_data) {
+            const cols = this.bird_grid_max_cols
+            const rows = this.bird_grid_max_rows
+            /*]
+            [|] Empty the current pos because this is meant to re-render the entire 'list'
+            [*/
+            this.bird_grid_current_pos = [0, 0]
+            /*]
+            [|] Clear the SVG because the data grid and the SVG are not intrinsically linked.
+            [*/
+            bird_data.svg.clear()
+            /*]
+            [|] Loop through each 'bird'
+            [*/
+            for(let i = 0; i < bird_data.arr.length; i += 1) {
+                if (bird_data.arr.length < (rows * cols)) {
+                    const coords = this.bird_grid[this.bird_grid_current_pos[0]][this.bird_grid_current_pos[1]]
+                    const x = coords[0]
+                    const y = coords[1]
+                    const new_bird = bird_data.svg.circle(x, y, this.bird_circle_radius)
+                    /*]
+                    [|]
+                    [*/
+                    new_bird.attr({
+                        fill: bird_data.pcolor
+                    })
+                    /*]
+                    [|]
+                    [*/
+                    new_bird.addClass(bird_data.css_classname)
+                    /*]
+                    [|] Assign Handlers
+                    [*/
+                    new_bird.mouseover(function () {
+                        new_bird.attr({
+                            fill: bird_data.hover_color
+                        })
+                    })
+                    .mouseout(function () {
+                        if (new_bird.is_selected === false || typeof new_bird.is_selected === 'undefined') {
+                            new_bird.attr({
+                                fill: bird_data.pcolor
+                            })
+                        }
+                        else if (new_bird.is_selected === true) {
+                            new_bird.attr({
+                                fill: bird_data.selected_color
+                            })
+                        }
+                    })
+                    .click(function () {
+                        /*]
+                        [|] Select all similar elements in the list
+                        [*/
+                        const da_group = bird_data.svg.selectAll('.' + bird_data.css_classname)
+                        /*]
+                        [|] initialize them with the needed properties.
+                        [*/
+                        da_group.forEach((n) => {
+                            n.is_selected = false
+                            n.attr({
+                                fill: bird_data.pcolor
+                            })
+                        })
+                        /*]
+                        [|] Set the clicked element to selected, and set color.
+                        [*/
+                        new_bird.is_selected = true
+                        new_bird.attr({
+                            fill: bird_data.selected_color
+                        })
+                    })
+                    /*]
+                    [|]
+                    [*/
+                    this.update_next_bird_grid_location('increment')
+                }
+                else {
+                    /*]
+                    [|] TODO: Snackbar
+                    [*/
+                }
+            }
+        },
         /*]
         [|] TODO: - update_bird_grid
         [|] 01: Break the flamingo, penguin, and toucan updates out of the function.
@@ -54,6 +138,7 @@ export default {
             const diam = this.bird_circle_radius * 2
             const cols = Math.trunc(w / diam)
             const rows = Math.trunc(h / diam)
+            let bird_data = {}
             /*]
             [|] Build the grid
             [*/
@@ -82,69 +167,77 @@ export default {
             /*]
             [|] Flamingos
             [*/
-            this.bird_grid_current_pos = [0, 0]
-            // TODO: Clear all contents from flamingos SVG
-            for(let i = 0; i < this.flamingos.length; i += 1) {
-                if (this.flamingos.length < (rows * cols)) {
-                    const coords = this.bird_grid[this.bird_grid_current_pos[0]][this.bird_grid_current_pos[1]]
-                    const x = coords[0]
-                    const y = coords[1]
-                    const new_flamingo = this.fi.circle(x, y, this.bird_circle_radius)
-                    new_flamingo.attr({
-                        fill: 'pink'
-                })
-                    this.update_next_bird_grid_location('increment')
-                }
-                else {
-                    /*]
-                    [|] TODO: Snackbar
-                    [*/
-                }
+            bird_data = {
+                svg: this.fi,
+                arr: this.flamingos,
+                css_classname: 'flamingo',
+                pcolor: 'pink',
+                hover_color: 'yellow',
+                selected_color: 'red'
             }
+            this.populate_bird_inventory(bird_data)
             /*]
             [|] Penguins
             [*/
-            this.bird_grid_current_pos = [0, 0]
-            // TODO: Clear all contents from Penguins SVG
-            for(let i = 0; i < this.penguins.length; i += 1) {
-                if (this.penguins.length < (rows * cols)) {
-                    const coords = this.bird_grid[this.bird_grid_current_pos[0]][this.bird_grid_current_pos[1]]
-                    const x = coords[0]
-                    const y = coords[1]
-                    const new_penguin = this.pi.circle(x, y, this.bird_circle_radius)
-                    new_penguin.attr({
-                        fill: 'black'
-                })
-                    this.update_next_bird_grid_location('increment')
-                }
-                else {
-                    /*]
-                    [|] TODO: Snackbar
-                    [*/
-                }
+            bird_data = {
+                svg: this.pi,
+                arr: this.penguins,
+                css_classname: 'penguin',
+                pcolor: 'black',
+                hover_color: 'yellow',
+                selected_color: 'red'
             }
+            this.populate_bird_inventory(bird_data)
+            // this.bird_grid_current_pos = [0, 0]
+            // // TODO: Clear all contents from Penguins SVG
+            // for(let i = 0; i < this.penguins.length; i += 1) {
+            //     if (this.penguins.length < (rows * cols)) {
+            //         const coords = this.bird_grid[this.bird_grid_current_pos[0]][this.bird_grid_current_pos[1]]
+            //         const x = coords[0]
+            //         const y = coords[1]
+            //         const new_penguin = this.pi.circle(x, y, this.bird_circle_radius)
+            //         new_penguin.attr({
+            //             fill: 'black'
+            //     })
+            //         this.update_next_bird_grid_location('increment')
+            //     }
+            //     else {
+            //         /*]
+            //         [|] TODO: Snackbar
+            //         [*/
+            //     }
+            // }
             /*]
             [|] Toucans
             [*/
-            this.bird_grid_current_pos = [0, 0]
-            // TODO: Clear all contents from Penguins SVG
-            for(let i = 0; i < this.toucans.length; i += 1) {
-                if (this.toucans.length < (rows * cols)) {
-                    const coords = this.bird_grid[this.bird_grid_current_pos[0]][this.bird_grid_current_pos[1]]
-                    const x = coords[0]
-                    const y = coords[1]
-                    const new_toucan = this.ti.circle(x, y, this.bird_circle_radius)
-                    new_toucan.attr({
-                        fill: 'green'
-                })
-                    this.update_next_bird_grid_location('increment')
-                }
-                else {
-                    /*]
-                    [|] TODO: Snackbar
-                    [*/
-                }
+            bird_data = {
+                svg: this.ti,
+                arr: this.toucans,
+                css_classname: 'toucan',
+                pcolor: 'green',
+                hover_color: 'yellow',
+                selected_color: 'red'
             }
+            this.populate_bird_inventory(bird_data)
+            // this.bird_grid_current_pos = [0, 0]
+            // // TODO: Clear all contents from Penguins SVG
+            // for(let i = 0; i < this.toucans.length; i += 1) {
+            //     if (this.toucans.length < (rows * cols)) {
+            //         const coords = this.bird_grid[this.bird_grid_current_pos[0]][this.bird_grid_current_pos[1]]
+            //         const x = coords[0]
+            //         const y = coords[1]
+            //         const new_toucan = this.ti.circle(x, y, this.bird_circle_radius)
+            //         new_toucan.attr({
+            //             fill: 'green'
+            //     })
+            //         this.update_next_bird_grid_location('increment')
+            //     }
+            //     else {
+            //         /*]
+            //         [|] TODO: Snackbar
+            //         [*/
+            //     }
+            // }
         },
         update_next_bird_grid_location (str) {
             if (str === 'increment') {
@@ -223,6 +316,16 @@ $light_green: #C8E6C9;
     }
     #toucan-inventory {
         width: 75%;
+    }
+    .flamingo {
+        &hover {
+            background-color: 'yellow';
+            color: 'yellow';
+        }
+    }.penguin {
+
+    }.toucan {
+
     }
 }
 </style>
