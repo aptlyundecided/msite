@@ -47,8 +47,8 @@
                     class='skill-card'
                     v-show='show_text === "data-services"')
                     h3 Data Aggregation and Analysis
-                    p Identifying key data, establishing pipelines to and from databases, and establishing tools for analysis of
-                      | the collected data have been key part of most of the projects I've worked on.
+                    p Identifying kPI's, establishing pipelines to and from databases, and establishing and building tools for analysis of 
+                      | the collected data have been significant part of most of the projects I've worked on.
 
                 // --- Cloud Services
                 
