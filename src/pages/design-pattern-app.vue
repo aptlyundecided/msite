@@ -22,11 +22,14 @@
 
             md-bottom-bar
                 md-bottom-bar-item(@click='add_bird("flamingo")') Flamingo
-                md-bottom-bar-item(@click='add_bird("toucan")') Toucan
                 md-bottom-bar-item(@click='add_bird("penguin")') Penguin
+                md-bottom-bar-item(@click='add_bird("toucan")') Toucan
 
         // --- Inventory Card
         aviary-inventory
+
+
+        // --- 
 </template>
 
 
@@ -65,6 +68,9 @@ export default {
         'aviary-inventory': aviary_inventory
     },
     computed: {
+        bird_limit () {
+            return this.$store.getters['aviary/bird_limit']
+        },
         total_flamingos () {
             return this.$store.getters['aviary/total_flamingos']
         },

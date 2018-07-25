@@ -2,12 +2,14 @@
     div(id='aviary-inventory')
         md-card
             md-card-header
-                div(class='md-title') Aviary Bird inventory
+                div(class='md-title') Aviary Bird Inventory
                 div(class='md-subhead') Each circle === 1 bird
             md-card-content
-                div
+                div(class='bird-pen')
                     svg(id='flamingo-inventory')
+                div(class='bird-pen')
                     svg(id='penguin-inventory')
+                div(class='bird-pen')
                     svg(id='toucan-inventory')
 
 </template>
@@ -128,10 +130,6 @@ export default {
                 }
             }
         },
-        /*]
-        [|] TODO: - update_bird_grid
-        [|] 01: Break the flamingo, penguin, and toucan updates out of the function.
-        [*/
         update_bird_grid () {
             const w = document.getElementById('flamingo-inventory').width.baseVal.value
             const h = document.getElementById('flamingo-inventory').height.baseVal.value
@@ -139,6 +137,10 @@ export default {
             const cols = Math.trunc(w / diam)
             const rows = Math.trunc(h / diam)
             let bird_data = {}
+            /*]
+            [|] Set bird limit ['based on screen size']
+            [*/
+            this.$store.commit('aviary/set_birds_limit', (cols * rows))
             /*]
             [|] Build the grid
             [*/
@@ -188,25 +190,6 @@ export default {
                 selected_color: 'red'
             }
             this.populate_bird_inventory(bird_data)
-            // this.bird_grid_current_pos = [0, 0]
-            // // TODO: Clear all contents from Penguins SVG
-            // for(let i = 0; i < this.penguins.length; i += 1) {
-            //     if (this.penguins.length < (rows * cols)) {
-            //         const coords = this.bird_grid[this.bird_grid_current_pos[0]][this.bird_grid_current_pos[1]]
-            //         const x = coords[0]
-            //         const y = coords[1]
-            //         const new_penguin = this.pi.circle(x, y, this.bird_circle_radius)
-            //         new_penguin.attr({
-            //             fill: 'black'
-            //     })
-            //         this.update_next_bird_grid_location('increment')
-            //     }
-            //     else {
-            //         /*]
-            //         [|] TODO: Snackbar
-            //         [*/
-            //     }
-            // }
             /*]
             [|] Toucans
             [*/
@@ -219,25 +202,10 @@ export default {
                 selected_color: 'red'
             }
             this.populate_bird_inventory(bird_data)
-            // this.bird_grid_current_pos = [0, 0]
-            // // TODO: Clear all contents from Penguins SVG
-            // for(let i = 0; i < this.toucans.length; i += 1) {
-            //     if (this.toucans.length < (rows * cols)) {
-            //         const coords = this.bird_grid[this.bird_grid_current_pos[0]][this.bird_grid_current_pos[1]]
-            //         const x = coords[0]
-            //         const y = coords[1]
-            //         const new_toucan = this.ti.circle(x, y, this.bird_circle_radius)
-            //         new_toucan.attr({
-            //             fill: 'green'
-            //     })
-            //         this.update_next_bird_grid_location('increment')
-            //     }
-            //     else {
-            //         /*]
-            //         [|] TODO: Snackbar
-            //         [*/
-            //     }
-            // }
+            /*]
+            [|]
+            [*/
+            this.$store.commit('aviary/check_bird_allowance')
         },
         update_next_bird_grid_location (str) {
             if (str === 'increment') {
@@ -318,14 +286,16 @@ $light_green: #C8E6C9;
         width: 75%;
     }
     .flamingo {
-        &hover {
-            background-color: 'yellow';
-            color: 'yellow';
-        }
+
     }.penguin {
 
     }.toucan {
 
+    }.bird-pen {
+        border: solid #ccc 1px;
+        width: 75%;
+        margin-left: 12.5%;
+        margin-right: 12.5%;
     }
 }
 </style>

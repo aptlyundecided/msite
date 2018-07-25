@@ -14,12 +14,20 @@ const aviary = {
     namespaced: true,
     state: {
         BirdFactory: birds.BirdFactory,
+        bird_limit: 10,
         flamingos: [],
+        flamingo_limit_reached: false,
         penguins: [],
+        penguin_limit_reached: false,
         toucans: [],
+        toucan_limit_reached: false,
         uncategorized_birds: []
     },
     actions: {
+        handle_bird_limits ({state, commit, rootState}, limit) {
+            commit('set_birds_limit', limit)
+            commit('check_bird_allowance')
+        }
     },
     mutations: {
         /*]
@@ -38,20 +46,26 @@ const aviary = {
                 [*/
                 switch (bird_type) {
                     case 'flamingo':
-                        new_bird = state.BirdFactory('flamingo')
-                        state.flamingos.push(new_bird)
+                        if (state.flamingos.length < state.bird_limit - 1) {
+                            new_bird = state.BirdFactory('flamingo')
+                            state.flamingos.push(new_bird)
+                        }
                         break
 
 
                     case 'penguin':
-                        new_bird = state.BirdFactory('penguin')
-                        state.penguins.push(new_bird)
+                        if (state.penguins.length < state.bird_limit - 1) {
+                            new_bird = state.BirdFactory('penguin')
+                            state.penguins.push(new_bird)
+                        }
                         break
 
 
                     case 'toucan':
-                        new_bird = state.BirdFactory('toucan')
-                        state.toucans.push(new_bird)
+                        if (state.toucans.length < state.bird_limit - 1) {
+                            new_bird = state.BirdFactory('toucan')
+                            state.toucans.push(new_bird)
+                        }
                         break
 
 
@@ -61,9 +75,41 @@ const aviary = {
             } else {
                 // TODO: Throw nasty bird error
             }
+        },
+        check_bird_allowance (state) {
+            /*]
+            [|]
+            [*/
+            if (state.flamingos.length >= state.bird_limit) {
+                state.flamingo_limit_reached = true
+            } else if (state.flamingos.length < state.bird_limit) {
+                state.flamingo_limit_reached = false
+            }
+            /*]
+            [|]
+            [*/
+            if (state.penguins.length >= state.bird_limit) {
+                state.penguin_limit_reached = true
+            } else if (state.penguins.length < state.bird_limit) {
+                state.penguin_limit_reached = false
+            }
+            /*]
+            [|]
+            [*/
+            if (state.toucans.length > state.bird_limit) {
+                state.toucan_limit_reached = true
+            } else if (state.toucans.length < state.bird_limit) {
+                state.toucan_limit_reached = false
+            }
+        },
+        set_birds_limit (state, limit) {
+            state.bird_limit = limit
         }
     },
     getters: {
+        bird_limit (state) {
+            return state.bird_limit
+        },
         flamingos (state) {
             return state.flamingos
         },
