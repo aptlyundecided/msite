@@ -8,11 +8,13 @@
             md-list(:md-ripple='false')
                 md-list-item(@click='show("hello-world")' :md-ripple='false') Hello World
                 md-list-item(@click='show("about-this-app")' :md-ripple='false') About this App
+                md-list-item(@click='show("about-me")' :md-ripple='false') About Me
                 md-list-item(@click='show("design-pattern-app")' :md-ripple='false') Design Patterns App
                 md-list-item(@click='show("playground")' :md-ripple='false') Playground
                 md-list-item(@click='show("my-experience")' :md-ripple='false') My Experience
         div(id='card-load-zone')
             about-this-app(v-show='show_text === "about-this-app"')
+            about-me(v-show='show_text==="about-me"')
             design-pattern-app(v-show='show_text === "design-pattern-app"')
             hello-world(v-show='show_text === "hello-world"')
             playground(v-show='show_text === "playground"')
@@ -29,6 +31,7 @@
 [|]
 [*/
 import about from './pages/about-this-app.vue'
+import about_me from './pages/about-me.vue'
 import design_pattern_app from './pages/design-pattern-app.vue'
 import dialog from './components/dialog.vue'
 import hello_world from './pages/hello-world.vue'
@@ -45,6 +48,7 @@ export default {
     }),
     components: {
         'about-this-app': about,
+        'about-me': about_me,
         'design-pattern-app': design_pattern_app,
         'dialog-box': dialog,
         'hello-world': hello_world,
