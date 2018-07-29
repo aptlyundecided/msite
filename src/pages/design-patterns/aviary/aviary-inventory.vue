@@ -11,7 +11,6 @@
                     svg(id='penguin-inventory')
                 div(class='bird-pen')
                     svg(id='toucan-inventory')
-
 </template>
 
 
@@ -35,6 +34,9 @@ export default {
         ti: {}  // --> Toucan Inventory SNAP.svg Object
     }),
     computed: {
+        bird_circle_lists () {
+            return this.$store.getters['aviary/bird_circles']
+        },
         flamingos () {
             return this.$store.getters['aviary/flamingos']
         },
@@ -47,8 +49,14 @@ export default {
     },
     methods: {
         populate_bird_inventory(bird_data) {
+            /*]
+            [|] Convenience reference to this
+            [*/
+            const self = this
             const cols = this.bird_grid_max_cols
             const rows = this.bird_grid_max_rows
+            let drawn_circles = this.bird_circle_lists
+            let new_bird_circle_list = []
             /*]
             [|] Empty the current pos because this is meant to re-render the entire 'list'
             [*/
@@ -72,12 +80,13 @@ export default {
                     new_bird.attr({
                         fill: bird_data.pcolor
                     })
+                    new_bird.id = i
                     /*]
                     [|]
                     [*/
                     new_bird.addClass(bird_data.css_classname)
                     /*]
-                    [|] Assign Handlers
+                    [|] Assign Event Handlers
                     [*/
                     new_bird.mouseover(function () {
                         new_bird.attr({
@@ -117,7 +126,15 @@ export default {
                         new_bird.attr({
                             fill: bird_data.selected_color
                         })
+                        /*]
+                        [|] Move the selected bird into the state machine
+                        [*/
+                        self.$store.commit('aviary/update_selected_bird', [bird_data.css_classname + 's', new_bird])
                     })
+                    /*]
+                    [|] Update bird lists
+                    [*/
+                    new_bird_circle_list[i] = new_bird
                     /*]
                     [|]
                     [*/
@@ -129,6 +146,11 @@ export default {
                     [*/
                 }
             }
+            /*]
+            [|] Push updated bird circles into the state machine.
+            [*/
+            drawn_circles[bird_data.css_classname + 's'] = new_bird_circle_list
+            this.$store.commit('aviary/update_bird_circles', drawn_circles)
         },
         update_bird_grid () {
             const w = document.getElementById('flamingo-inventory').width.baseVal.value
@@ -170,36 +192,36 @@ export default {
             [|] Flamingos
             [*/
             bird_data = {
-                svg: this.fi,
                 arr: this.flamingos,
                 css_classname: 'flamingo',
-                pcolor: 'pink',
                 hover_color: 'yellow',
-                selected_color: 'red'
+                pcolor: 'pink',
+                selected_color: 'red',
+                svg: this.fi
             }
             this.populate_bird_inventory(bird_data)
             /*]
             [|] Penguins
             [*/
             bird_data = {
-                svg: this.pi,
                 arr: this.penguins,
                 css_classname: 'penguin',
-                pcolor: 'black',
                 hover_color: 'yellow',
-                selected_color: 'red'
+                pcolor: 'black',
+                selected_color: 'red',
+                svg: this.pi
             }
             this.populate_bird_inventory(bird_data)
             /*]
             [|] Toucans
             [*/
             bird_data = {
-                svg: this.ti,
                 arr: this.toucans,
                 css_classname: 'toucan',
-                pcolor: 'green',
                 hover_color: 'yellow',
-                selected_color: 'red'
+                pcolor: 'green',
+                selected_color: 'red',
+                svg: this.ti
             }
             this.populate_bird_inventory(bird_data)
             /*]
@@ -275,7 +297,6 @@ $light_green: #C8E6C9;
 
 // --- General Styling [ PRE Media Query ]
 #aviary-inventory {
-    @include two-in-a-row();
     #flamingo-inventory {
         width: 75%;
     }

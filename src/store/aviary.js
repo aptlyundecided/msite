@@ -14,11 +14,17 @@ const aviary = {
     namespaced: true,
     state: {
         BirdFactory: birds.BirdFactory,
+        bird_circles: {
+            flamingos: [],
+            penguins: [],
+            toucans: []
+        },
         bird_limit: 10,
         flamingos: [],
         flamingo_limit_reached: false,
         penguins: [],
         penguin_limit_reached: false,
+        selected_bird: {},
         toucans: [],
         toucan_limit_reached: false,
         uncategorized_birds: []
@@ -104,9 +110,33 @@ const aviary = {
         },
         set_birds_limit (state, limit) {
             state.bird_limit = limit
-        }
+        },
+        update_bird_circles (state, bird_arrs) {
+            state.bird_circles = bird_arrs
+        },
+        update_bird_name (state, new_name) {
+            state.selected_bird.name = new_name
+            /*]
+            [|]
+            [*/
+            if (typeof state.selected_bird.bird_type !== 'undefined') {
+                state[state.selected_bird.bird_type.toLowercase() + 's'][state.selected_bird.id]
+            }
+        },
+        update_selected_bird (state, args) {
+            const list_name = args[0]
+            const bird_svg_object = args[1]
+            /*]
+            [|] Set the selected bird in the state machine, when click event happens.
+            [*/
+            state.selected_bird = state[list_name][bird_svg_object.id]
+            state.selected_bird.id = bird_svg_object.id
+        },
     },
     getters: {
+        bird_circles (state) {
+            return state.bird_circles
+        },
         bird_limit (state) {
             return state.bird_limit
         },
@@ -115,6 +145,9 @@ const aviary = {
         },
         penguins (state) {
             return state.penguins
+        },
+        selected_bird (state) {
+            return state.selected_bird
         },
         toucans (state) {
             return state.toucans

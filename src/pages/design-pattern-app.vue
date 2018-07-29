@@ -25,11 +25,14 @@
                 md-bottom-bar-item(@click='add_bird("penguin")') Penguin
                 md-bottom-bar-item(@click='add_bird("toucan")') Toucan
 
-        // --- Inventory Card
-        aviary-inventory
+        div(id='dp-demobox-1')
+            div(class='b1')
+                // --- Inventory Card
+                aviary-inventory
 
-
-        // --- 
+            div(class='b2')
+                // --- Mediator Example Card
+                mediator
 </template>
 
 
@@ -41,6 +44,7 @@
 [|]
 [*/
 import aviary_inventory from './design-patterns/aviary/aviary-inventory.vue'
+import mediator from './design-patterns/aviary/mediator/mediator.vue'
 /*]
 [|]
 [*/
@@ -65,7 +69,8 @@ export default {
         }
     }),
     components: {
-        'aviary-inventory': aviary_inventory
+        'aviary-inventory': aviary_inventory,
+        'mediator': mediator
     },
     computed: {
         bird_limit () {
@@ -139,7 +144,14 @@ $blue: #42A5F5;
                 color: white;
             }
         }
-    }
+    }#dp-demobox-1 {
+        margin-top: 5%;
+        .b1 {
+            @include two-in-a-row();
+        }.b2 {
+            @include two-in-a-row();
+        }
+    }   
 }
 
 </style>

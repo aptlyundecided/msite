@@ -10,6 +10,7 @@ const Penguin = () => {
     state.color = 'black and white'
     state.height = state.set_height(3.6, 4.3)
     state.weight = state.set_weight(43, 53)
+    state.age = state.set_age(3.0, 23.5)
     state.can_fly = false
     /*]
     [|]
