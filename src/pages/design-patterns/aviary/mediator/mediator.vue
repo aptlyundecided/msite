@@ -2,8 +2,8 @@
     div(id='mediator-pattern')
         md-card
             md-card-header
-                div(class='md-title') Implementing a Mediator pattern
-                div(class='md-subhead') for simplifying interface between multiple objects
+                div(class='md-title') Bird Information Card
+                div(class='md-subhead') Is actually powered by a Mediator Pattern
             md-card-content
                 div(class='info-button')
                     md-button(:md-ripple='false' @click='load_dialog("mediator_1")')
@@ -36,6 +36,7 @@
                             label(for='bird-name') New Bird Name
                             md-input(name='bird-name' id='bird-name' v-model='bird_name_form')
                         md-button(class='md-raised' :md-ripple='false' v-on:click='update_bird_name') update bird name
+                        // md-button(class='md-raised' :md-ripple='false' v-on:click='test') Test
 </template>
 
 
@@ -54,10 +55,10 @@ export default {
             title: 'Exchanging Data Between Two Separate Objects',
             subtitle: 'The circles are more than they appear',
             p1: [
-                'Data is generated each time a new bird is added.',
+                'Bird Data is generated each time a new bird is added.  But it is not attached to the circles',
             ],
             p2: [
-                'The SVG circles in the bird inventory are generated at the component level, and are each a unique object.'
+                'The SVG circles in the bird inventory are generated at the vue component level, apartt from the state machine.'
                 
             ],
             p3: [
@@ -65,12 +66,27 @@ export default {
                 '  But each circle must be linked to the correct data.'
             ],
             p4: [
-                'The mediator pattern allows ingests a small amount of data from both the circles, and the bird data objects.',
+                'The mediator pattern ingests a small amount of data from both the circles, and the bird data objects.',
                 '  It is fully responsible for the correlation between the two.'
             ]
         }
     }),
     computed: {
+        bird_age () {
+            if (typeof this.selected_bird.age !== 'undefined') {
+                return this.selected_bird.age.toFixed(1)
+            }
+        },
+        bird_height () {
+            if (typeof this.selected_bird.height !== 'undefined') {
+                return this.selected_bird.height.toFixed(2)
+            }
+        },
+        bird_name () {
+            if (this.selected_bird.name !== 'undefined') {
+                return this.selected_bird.name
+            }
+        },
         bird_picture_src () {
             if (this.bird_type === 'Flamingo') {
                 return 'src/assets/birds/flamingo-2.svg'
@@ -89,21 +105,6 @@ export default {
                 return 'width: 35%;'
             }
         },
-        bird_age () {
-            if (typeof this.selected_bird.age !== 'undefined') {
-                return this.selected_bird.age.toFixed(1)
-            }
-        },
-        bird_height () {
-            if (typeof this.selected_bird.height !== 'undefined') {
-                return this.selected_bird.height.toFixed(2)
-            }
-        },
-        bird_weight () {
-            if (typeof this.selected_bird.weight !== 'undefined') {
-                return this.selected_bird.weight.toFixed(2)
-            }
-        },
         bird_type () {
             const sb = this.$store.getters['aviary/selected_bird']
             if (typeof sb.type !== 'undefined') {
@@ -112,14 +113,14 @@ export default {
                 return 'no type selected'
             }
         },
+        bird_weight () {
+            if (typeof this.selected_bird.weight !== 'undefined') {
+                return this.selected_bird.weight.toFixed(2)
+            }
+        },
         selected_bird () {
             return this.$store.getters['aviary/selected_bird']
         },
-        bird_name () {
-            if (this.selected_bird.name !== 'undefined') {
-                return this.selected_bird.name
-            }
-        }
     },
     methods: {
         load_dialog (blurb_title) {
@@ -131,6 +132,10 @@ export default {
             [|] After submitting the new bird name, clear the bird name variable.
             [*/
             this.bird_name_form = ''
+        },
+        test () {
+            console.log(this.$store.getters['aviary/mediator/selected_bird'])
+            console.log(this.$store.getters['aviary/mediator/selected_bird_id'])
         }
     },
     mounted () {

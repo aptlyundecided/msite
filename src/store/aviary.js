@@ -6,6 +6,7 @@
 [|]     Author:         Alex Wilson
 [|] ||=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=||
 [*/
+import mediator from './aviary_mediator.js'
 import birds from './birds'
 /*]
 [|]
@@ -33,6 +34,19 @@ const aviary = {
         handle_bird_limits ({state, commit, rootState}, limit) {
             commit('set_birds_limit', limit)
             commit('check_bird_allowance')
+        },
+        update_selected_bird({state, commit}, args) {
+            const list_name = args[0] + 's'
+            const bird_svg_object = args[1]
+            /*]
+            [|] Set the selected bird in the state machine, when click event happens.
+            [*/
+            state.selected_bird = state[list_name][bird_svg_object.id]
+            state.selected_bird.id = bird_svg_object.id
+            /*]
+            [|]
+            [*/
+            commit('mediator/update_selected_bird_class_name', args[0])
         }
     },
     mutations: {
@@ -124,13 +138,6 @@ const aviary = {
             }
         },
         update_selected_bird (state, args) {
-            const list_name = args[0]
-            const bird_svg_object = args[1]
-            /*]
-            [|] Set the selected bird in the state machine, when click event happens.
-            [*/
-            state.selected_bird = state[list_name][bird_svg_object.id]
-            state.selected_bird.id = bird_svg_object.id
         },
     },
     getters: {
@@ -161,6 +168,9 @@ const aviary = {
         total_toucans (state) {
             return state.toucans.length
         }
+    },
+    modules: {
+        mediator
     }
 }
 /*]

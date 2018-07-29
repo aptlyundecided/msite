@@ -3,8 +3,11 @@
         md-card
             md-card-header
                 div(class='md-title') Aviary Bird Inventory
-                div(class='md-subhead') Each circle === 1 bird
+                div(class='md-subhead') This is an Observer Pattern
             md-card-content
+                div(class='info-button')
+                    md-button(:md-ripple='false' @click='load_dialog("observer_1")')
+                        md-icon info
                 div(class='bird-pen')
                     svg(id='flamingo-inventory')
                 div(class='bird-pen')
@@ -31,7 +34,23 @@ export default {
         bird_grid_max_rows: 0,
         fi: {}, // --> Flamingo Inventory SNAP.svg Object
         pi: {}, // --> Penguin Inventory SNAP.svg Object
-        ti: {}  // --> Toucan Inventory SNAP.svg Object
+        ti: {}, // --> Toucan Inventory SNAP.svg Object
+        observer_1: {
+            title: 'Updating a group of objects',
+            subtitle: 'Only after another object has been modified',
+            p1: [
+                'Each of these circles represents one bird data object',
+            ],
+            p2: [
+                'The circles are redrawn each time the bird data object changes in some way' 
+            ],
+            p3: [
+                'Changes can be carried out directly to each of these objects'
+            ],
+            p4: [
+                'But a circle will never exist where there is not a corresponding bird data object for it to pair with.'
+            ]
+        }
     }),
     computed: {
         bird_circle_lists () {
@@ -48,6 +67,9 @@ export default {
         }
     },
     methods: {
+        load_dialog (blurb_title) {
+            this.$store.dispatch('dialog/activate_dialog', this[blurb_title])
+        },
         populate_bird_inventory(bird_data) {
             /*]
             [|] Convenience reference to this
@@ -62,7 +84,7 @@ export default {
             [*/
             this.bird_grid_current_pos = [0, 0]
             /*]
-            [|] Clear the SVG because the data grid and the SVG are not intrinsically linked.
+            [|] Redraw the SVG everytime for simplicity sake. (Is this a performance sacrifice?)
             [*/
             bird_data.svg.clear()
             /*]
@@ -74,13 +96,24 @@ export default {
                     const x = coords[0]
                     const y = coords[1]
                     const new_bird = bird_data.svg.circle(x, y, this.bird_circle_radius)
+                    const index_match = self.$store.getters['aviary/mediator/selected_bird_id'] === i
+                    const class_match = self.$store.getters['aviary/mediator/selected_bird_classname'] === bird_data.css_classname
+                    /*]
+                    [|] Assign iterator value to bird ID.
+                    [*/
+                    new_bird.id = i
                     /*]
                     [|]
                     [*/
-                    new_bird.attr({
-                        fill: bird_data.pcolor
-                    })
-                    new_bird.id = i
+                    if (index_match === true && class_match === true) {
+                        new_bird.attr({
+                            fill: bird_data.selected_color
+                        })
+                    } else {
+                        new_bird.attr({
+                            fill: bird_data.pcolor
+                        })
+                    }
                     /*]
                     [|]
                     [*/
@@ -94,42 +127,35 @@ export default {
                         })
                     })
                     .mouseout(function () {
-                        if (new_bird.is_selected === false || typeof new_bird.is_selected === 'undefined') {
-                            new_bird.attr({
-                                fill: bird_data.pcolor
-                            })
-                        }
-                        else if (new_bird.is_selected === true) {
+                        if (new_bird.is_selected === true) {
                             new_bird.attr({
                                 fill: bird_data.selected_color
+                            })                            
+                        } else {
+                            new_bird.attr({
+                                fill: bird_data.pcolor
                             })
                         }
                     })
                     .click(function () {
                         /*]
-                        [|] Select all similar elements in the list
+                        [|] Deselect all other elements.
                         [*/
-                        const da_group = bird_data.svg.selectAll('.' + bird_data.css_classname)
+                        self.fi.deselect_all('flamingo', 'pink')
+                        self.pi.deselect_all('penguin', 'black')
+                        self.ti.deselect_all('toucan', 'green')
                         /*]
-                        [|] initialize them with the needed properties.
-                        [*/
-                        da_group.forEach((n) => {
-                            n.is_selected = false
-                            n.attr({
-                                fill: bird_data.pcolor
-                            })
-                        })
-                        /*]
-                        [|] Set the clicked element to selected, and set color.
+                        [|] The clicked element must be marked as selected
                         [*/
                         new_bird.is_selected = true
                         new_bird.attr({
                             fill: bird_data.selected_color
                         })
                         /*]
-                        [|] Move the selected bird into the state machine
+                        [|] Pass selected bird data to the state machine
                         [*/
                         self.$store.commit('aviary/update_selected_bird', [bird_data.css_classname + 's', new_bird])
+                        self.$store.dispatch('aviary/update_selected_bird', [bird_data.css_classname, new_bird])
                     })
                     /*]
                     [|] Update bird lists
@@ -147,9 +173,12 @@ export default {
                 }
             }
             /*]
-            [|] Push updated bird circles into the state machine.
+            [|] Update circle array
             [*/
             drawn_circles[bird_data.css_classname + 's'] = new_bird_circle_list
+            /*]
+            [|] Move the array into the state machine
+            [*/
             this.$store.commit('aviary/update_bird_circles', drawn_circles)
         },
         update_bird_grid () {
@@ -255,6 +284,31 @@ export default {
             const s2 = Snap('#penguin-inventory')
             const s3 = Snap('#toucan-inventory')
             /*]
+            [|] Create deselect all function
+            [*/
+            const deselect_all = function (class_name, primary_color) {
+                const group = this.selectAll('.' + class_name)
+                /*]
+                [|] Loop through each element, and 'deselect' it.
+                [*/
+                group.forEach((n) => {
+                    n.is_selected = false
+                    n.attr({
+                        fill: primary_color
+                    })
+                })
+            }
+            /*]
+            [|]
+            [*/
+            s1.deselect_all = deselect_all
+            s2.deselect_all = deselect_all
+            s3.deselect_all = deselect_all
+            /*]
+            [|]
+            [*/
+            s1.deselect_all()
+            /*]
             [|]
             [*/
             this.fi = s1
@@ -297,6 +351,9 @@ $light_green: #C8E6C9;
 
 // --- General Styling [ PRE Media Query ]
 #aviary-inventory {
+    .info-button {
+        text-align: right;
+    }
     #flamingo-inventory {
         width: 75%;
     }
@@ -305,13 +362,6 @@ $light_green: #C8E6C9;
     }
     #toucan-inventory {
         width: 75%;
-    }
-    .flamingo {
-
-    }.penguin {
-
-    }.toucan {
-
     }.bird-pen {
         border: solid #ccc 1px;
         width: 75%;
